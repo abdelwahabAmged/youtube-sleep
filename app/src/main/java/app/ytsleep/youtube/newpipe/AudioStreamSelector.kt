@@ -1,6 +1,7 @@
 package app.ytsleep.youtube.newpipe
 
 import android.net.Uri
+import app.ytsleep.youtube.AudioQuality
 import app.ytsleep.youtube.AudioStream
 import app.ytsleep.youtube.ContentError
 import org.schabi.newpipe.extractor.stream.AudioTrackType
@@ -15,31 +16,39 @@ object AudioStreamSelector {
      */
     data class Candidate(val mimeType: String, val bitrateKbps: Int, val trackType: AudioTrackType? = null)
 
-    /**
-     * Highest bitrate worth downloading. Opus at ~70 kbps sounds the same as 160 kbps for speech,
-     * music and sleep sounds at bedtime volume, and uses ~31 MB/hour instead of ~70 MB/hour.
-     */
-    const val DATA_SAVER_MAX_KBPS = 80
+    /** Upper bitrate for [AudioQuality.NORMAL]: Opus 70 kbps in practice, ~31 MB per hour. */
+    const val NORMAL_MAX_KBPS = 80
 
     /**
-     * Index of the best candidate: the original-language track first (never YouTube's auto-dubbed
-     * or descriptive tracks while an original exists), then a stream within the data budget.
+     * Index of the best candidate for [quality]. The original-language track always comes first
+     * (never YouTube's auto-dubbed or descriptive tracks while an original exists). Then:
+     * - DATA_SAVER: the smallest stream.
+     * - NORMAL: the best stream within [NORMAL_MAX_KBPS], else the smallest above it.
+     * - HIGH: the best stream.
+     * Ties go to Opus/WebM, which sounds better than AAC at the same bitrate.
      */
-    fun bestIndex(candidates: List<Candidate>): Int {
+    fun bestIndex(candidates: List<Candidate>, quality: AudioQuality = AudioQuality.NORMAL): Int {
         if (candidates.isEmpty()) throw ContentError.Unplayable("No audio-only streams available")
-        return candidates.indices.maxWith(
-            compareBy<Int>(
-                { trackRank(candidates[it].trackType) },
-                { if (candidates[it].bitrateKbps <= DATA_SAVER_MAX_KBPS) 1 else 0 },
+        val byTrack = compareBy<Int> { trackRank(candidates[it].trackType) }
+        val order = when (quality) {
+            AudioQuality.DATA_SAVER -> byTrack
+                // An unknown bitrate (<= 0) must not pass for the smallest stream.
+                .thenBy { -(candidates[it].bitrateKbps.takeIf { kbps -> kbps > 0 } ?: Int.MAX_VALUE / 2) }
+                .thenBy { opus(candidates[it]) }
+            AudioQuality.NORMAL -> byTrack
+                .thenBy { if (withinBudget(candidates[it])) 1 else 0 }
                 // Within the budget: Opus first, then the highest bitrate.
                 // Above it: the smallest stream first, whatever the codec.
-                { if (withinBudget(candidates[it])) opus(candidates[it]) else -candidates[it].bitrateKbps },
-                { if (withinBudget(candidates[it])) candidates[it].bitrateKbps else opus(candidates[it]) },
-            )
-        )
+                .thenBy { if (withinBudget(candidates[it])) opus(candidates[it]) else -candidates[it].bitrateKbps }
+                .thenBy { if (withinBudget(candidates[it])) candidates[it].bitrateKbps else opus(candidates[it]) }
+            AudioQuality.HIGH -> byTrack
+                .thenBy { candidates[it].bitrateKbps }
+                .thenBy { opus(candidates[it]) }
+        }
+        return candidates.indices.maxWith(order)
     }
 
-    private fun withinBudget(c: Candidate) = c.bitrateKbps <= DATA_SAVER_MAX_KBPS
+    private fun withinBudget(c: Candidate) = c.bitrateKbps <= NORMAL_MAX_KBPS
     private fun opus(c: Candidate) = if (c.mimeType.contains("webm")) 1 else 0
 
     private fun trackRank(type: AudioTrackType?): Int = when (type) {
@@ -49,11 +58,11 @@ object AudioStreamSelector {
         AudioTrackType.DUBBED, AudioTrackType.DESCRIPTIVE -> 0
     }
 
-    fun select(streams: List<NewPipeAudioStream>): AudioStream {
+    fun select(streams: List<NewPipeAudioStream>, quality: AudioQuality): AudioStream {
         // Only direct HTTP files can be read with ranged requests; skip HLS/DASH manifests.
         val playable = streams.filter { it.isUrl && it.deliveryMethod == DeliveryMethod.PROGRESSIVE_HTTP }
         val best = playable[
-            bestIndex(playable.map { Candidate(it.format?.mimeType.orEmpty(), it.averageBitrate, it.audioTrackType) })
+            bestIndex(playable.map { Candidate(it.format?.mimeType.orEmpty(), it.averageBitrate, it.audioTrackType) }, quality)
         ]
         return AudioStream(
             url = best.content,

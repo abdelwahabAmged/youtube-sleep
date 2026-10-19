@@ -20,7 +20,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import app.ytsleep.BuildConfig
+import app.ytsleep.youtube.AudioQuality
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(navController: NavController, vm: SettingsViewModel = viewModel()) {
     val state by vm.state.collectAsStateWithLifecycle()
@@ -34,7 +36,10 @@ fun SettingsScreen(navController: NavController, vm: SettingsViewModel = viewMod
         Spacer(Modifier.height(8.dp))
         Text("Status: ${state.accountStatus}", style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             OutlinedButton(onClick = { navController.navigate("account/connect") }) {
                 Text(if (state.accountStatus == "EXPIRED") "Reconnect" else "Connect")
             }
@@ -45,6 +50,22 @@ fun SettingsScreen(navController: NavController, vm: SettingsViewModel = viewMod
                 OutlinedButton(onClick = vm::signOut) { Text("Sign out") }
             }
         }
+
+        Spacer(Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(Modifier.height(24.dp))
+
+        Text("Audio quality", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(4.dp))
+        Text(
+            "Chosen automatically by network when each video starts.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(12.dp))
+        QualityRow("On Wi-Fi", state.wifiQuality, vm::setWifiQuality)
+        Spacer(Modifier.height(12.dp))
+        QualityRow("On mobile data", state.mobileQuality, vm::setMobileQuality)
 
         Spacer(Modifier.height(24.dp))
         HorizontalDivider()
@@ -95,4 +116,23 @@ private fun BatteryOptimizationRow() {
             )
         }) { Text("Allow background playback") }
     }
+}
+
+@Composable
+private fun QualityRow(label: String, selected: AudioQuality, onSelect: (AudioQuality) -> Unit) {
+    Text(label, style = MaterialTheme.typography.bodyMedium)
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        AudioQuality.entries.forEach { quality ->
+            FilterChip(
+                selected = quality == selected,
+                onClick = { onSelect(quality) },
+                label = { Text(quality.label) },
+            )
+        }
+    }
+    Text(
+        "About ${selected.mbPerHour} MB per hour",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }

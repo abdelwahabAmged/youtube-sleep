@@ -3,6 +3,7 @@ package app.ytsleep.playback
 import androidx.annotation.OptIn
 import android.app.PendingIntent
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.media3.common.AudioAttributes
@@ -39,6 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @OptIn(UnstableApi::class)
 class PlaybackService : MediaSessionService() {
@@ -81,7 +83,14 @@ class PlaybackService : MediaSessionService() {
         // DefaultDataSource handles file/asset URIs itself and hands ytsleep:// to our resolver.
         val dataSourceFactory = DefaultDataSource.Factory(
             this,
-            StreamResolvingDataSource.Factory(container.contentSource, container.okHttpClient),
+            StreamResolvingDataSource.Factory(container.contentSource, container.okHttpClient) {
+                // Mobile data (and other paid networks) are "metered"; Wi-Fi usually isn't.
+                val metered = getSystemService(ConnectivityManager::class.java).isActiveNetworkMetered
+                runBlocking {
+                    if (metered) container.settingsStore.mobileQuality.first()
+                    else container.settingsStore.wifiQuality.first()
+                }
+            },
         )
 
         player = ExoPlayer.Builder(this, audioOnlyRenderers)

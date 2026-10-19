@@ -9,6 +9,7 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.datasource.HttpDataSource
+import app.ytsleep.youtube.AudioQuality
 import app.ytsleep.youtube.AudioStream
 import app.ytsleep.youtube.ContentError
 import app.ytsleep.youtube.ContentSource
@@ -21,16 +22,25 @@ private const val CHUNK_SIZE = 10 * 1024 * 1024L
 private const val DEFAULT_URL_LIFETIME_MS = 5 * 60 * 60 * 1000L
 
 @OptIn(UnstableApi::class)
-class StreamResolver(private val contentSource: ContentSource) {
+class StreamResolver(
+    private val contentSource: ContentSource,
+    /** Quality for the current network (Wi-Fi or mobile data), read when an item first starts. */
+    private val qualityForCurrentNetwork: () -> AudioQuality,
+) {
     private data class Cached(val stream: AudioStream, val expiresAtMs: Long)
 
     private val cache = ConcurrentHashMap<String, Cached>()
 
+    // An item keeps the quality it started with: when its URL expires and is re-resolved it must
+    // be the same audio file, or byte offsets from the old one would point into the wrong data.
+    private val chosenQuality = ConcurrentHashMap<String, AudioQuality>()
+
     fun resolve(videoId: String): AudioStream {
         val now = System.currentTimeMillis()
         cache[videoId]?.takeIf { now < it.expiresAtMs }?.let { return it.stream }
+        val quality = chosenQuality.getOrPut(videoId, qualityForCurrentNetwork)
         val stream = try {
-            runBlocking { contentSource.resolveAudio(videoId) }
+            runBlocking { contentSource.resolveAudio(videoId, quality) }
         } catch (e: ContentError.Offline) {
             // An IOException lets ExoPlayer's load-error policy retry until the network returns.
             throw java.io.IOException("Offline while resolving $videoId", e)
@@ -154,8 +164,12 @@ class StreamResolvingDataSource(
     }
 
     @OptIn(UnstableApi::class)
-    class Factory(contentSource: ContentSource, client: OkHttpClient) : DataSource.Factory {
-        private val resolver = StreamResolver(contentSource)
+    class Factory(
+        contentSource: ContentSource,
+        client: OkHttpClient,
+        qualityForCurrentNetwork: () -> AudioQuality,
+    ) : DataSource.Factory {
+        private val resolver = StreamResolver(contentSource, qualityForCurrentNetwork)
         // The app-wide OkHttp client keeps connections alive, so each 10 MB range request reuses
         // the open TLS connection instead of handshaking again.
         private val httpFactory = OkHttpDataSource.Factory(client)

@@ -142,6 +142,7 @@ The user can set a timer (e.g. 15, 30, 45, 60, 90 minutes, or "end of current it
 - **FR-012**: Shorts MUST be excluded from search results, both feed tabs, playlists (including the user's own) and any queue. An item counts as a Short if YouTube marks it as a Short OR its duration is 180 seconds or less.
 - **FR-013**: Lists (feed, search, playlists) MUST load in pages; the next page loads automatically as the user scrolls near the end (infinite scroll, owner's choice 2026-10-19). A page that fails to load shows the error with a "Try again" action instead of retrying in a loop.
 - **FR-013a**: Signed-in users MUST be able to save any listed video to Watch later or to one of their own playlists from the video's row, in at most 2 taps; the change is made on their YouTube account. "Liked videos" is not offered as a target.
+- **FR-013b**: Settings MUST offer an audio quality (Data saver ≈22 MB/h, Normal ≈31 MB/h, High ≈70 MB/h) separately for Wi-Fi and mobile data, defaulting to Normal and Data saver; the app picks the setting for the current network when each item starts and keeps it for that item.
 
 **Sleep experience**
 

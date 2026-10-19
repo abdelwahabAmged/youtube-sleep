@@ -13,6 +13,6 @@ interface ContentSource {
     suspend fun feed(kind: FeedKind, nextToken: String? = null): Page<MediaItem>
     suspend fun myPlaylists(): List<PlaylistSummary>
     suspend fun playlistItems(playlistId: String, nextToken: String? = null): Page<MediaItem>
-    suspend fun resolveAudio(videoId: String): AudioStream
+    suspend fun resolveAudio(videoId: String, quality: AudioQuality): AudioStream
     suspend fun addToPlaylist(playlistId: String, videoId: String)
 }

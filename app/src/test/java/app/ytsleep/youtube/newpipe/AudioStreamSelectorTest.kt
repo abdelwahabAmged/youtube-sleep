@@ -1,5 +1,6 @@
 package app.ytsleep.youtube.newpipe
 
+import app.ytsleep.youtube.AudioQuality
 import app.ytsleep.youtube.ContentError
 import app.ytsleep.youtube.newpipe.AudioStreamSelector.Candidate
 import org.junit.Assert.assertEquals
@@ -57,6 +58,33 @@ class AudioStreamSelectorTest {
     @Test
     fun `dubbed track is used only when nothing else exists`() {
         assertEquals(0, AudioStreamSelector.bestIndex(listOf(Candidate("audio/webm", 70, AudioTrackType.DUBBED))))
+    }
+
+    @Test
+    fun `data saver picks the smallest stream`() {
+        // Opus 50 is not the smallest: AAC 48 is.
+        assertEquals(0, AudioStreamSelector.bestIndex(typical, AudioQuality.DATA_SAVER))
+    }
+
+    @Test
+    fun `data saver ignores a stream with unknown bitrate`() {
+        val candidates = listOf(Candidate("audio/webm", -1), Candidate("audio/webm", 50))
+        assertEquals(1, AudioStreamSelector.bestIndex(candidates, AudioQuality.DATA_SAVER))
+    }
+
+    @Test
+    fun `high picks the best stream`() {
+        assertEquals(4, AudioStreamSelector.bestIndex(typical, AudioQuality.HIGH))
+    }
+
+    @Test
+    fun `every quality keeps the original language`() {
+        val candidates = listOf(
+            Candidate("audio/mp4", 48, AudioTrackType.DUBBED),
+            Candidate("audio/webm", 160, AudioTrackType.DUBBED),
+            Candidate("audio/webm", 70, AudioTrackType.ORIGINAL),
+        )
+        AudioQuality.entries.forEach { assertEquals(it.name, 2, AudioStreamSelector.bestIndex(candidates, it)) }
     }
 
     @Test(expected = ContentError.Unplayable::class)

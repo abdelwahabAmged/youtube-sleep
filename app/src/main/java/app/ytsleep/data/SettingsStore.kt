@@ -1,5 +1,6 @@
 package app.ytsleep.data
 
+import app.ytsleep.youtube.AudioQuality
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -21,7 +22,28 @@ class SettingsStore(private val context: Context) {
         val lastSleepTimerMinutes = intPreferencesKey("last_sleep_timer_minutes")
         val batteryPromptShown = booleanPreferencesKey("battery_prompt_shown")
         val lastUpdateCheckAt = longPreferencesKey("last_update_check_at")
+        val wifiQuality = stringPreferencesKey("audio_quality_wifi")
+        val mobileQuality = stringPreferencesKey("audio_quality_mobile")
     }
+
+    val wifiQuality: Flow<AudioQuality> = context.dataStore.data.map { prefs ->
+        prefs[Keys.wifiQuality].toQuality() ?: AudioQuality.NORMAL
+    }
+
+    /** Defaults to the smallest stream: mobile data is the expensive network. */
+    val mobileQuality: Flow<AudioQuality> = context.dataStore.data.map { prefs ->
+        prefs[Keys.mobileQuality].toQuality() ?: AudioQuality.DATA_SAVER
+    }
+
+    suspend fun setWifiQuality(quality: AudioQuality) {
+        context.dataStore.edit { it[Keys.wifiQuality] = quality.name }
+    }
+
+    suspend fun setMobileQuality(quality: AudioQuality) {
+        context.dataStore.edit { it[Keys.mobileQuality] = quality.name }
+    }
+
+    private fun String?.toQuality(): AudioQuality? = this?.let { runCatching { AudioQuality.valueOf(it) }.getOrNull() }
 
     val repeatMode: Flow<RepeatMode> = context.dataStore.data.map { prefs ->
         prefs[Keys.repeatMode]?.let { runCatching { RepeatMode.valueOf(it) }.getOrNull() } ?: RepeatMode.OFF

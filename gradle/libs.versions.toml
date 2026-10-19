@@ -67,7 +67,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 # Desugaring
-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugar" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

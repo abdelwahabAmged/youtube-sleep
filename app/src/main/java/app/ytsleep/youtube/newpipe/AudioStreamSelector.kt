@@ -9,23 +9,38 @@ import org.schabi.newpipe.extractor.stream.AudioStream as NewPipeAudioStream
 
 object AudioStreamSelector {
 
-    /** [trackType] is YouTube's label for the track (ORIGINAL, DUBBED, ...); null when a video has one track. */
-    data class Candidate(val mimeType: String, val bitrate: Int, val trackType: AudioTrackType? = null)
+    /**
+     * [bitrateKbps] as reported by NewPipe (kbit/s). [trackType] is YouTube's label for the track
+     * (ORIGINAL, DUBBED, ...), null when a video has a single track.
+     */
+    data class Candidate(val mimeType: String, val bitrateKbps: Int, val trackType: AudioTrackType? = null)
+
+    /**
+     * Highest bitrate worth downloading. Opus at ~70 kbps sounds the same as 160 kbps for speech,
+     * music and sleep sounds at bedtime volume, and uses ~31 MB/hour instead of ~70 MB/hour.
+     */
+    const val DATA_SAVER_MAX_KBPS = 80
 
     /**
      * Index of the best candidate: the original-language track first (never YouTube's auto-dubbed
-     * or descriptive tracks while an original exists), then Opus/WebM, then highest bitrate.
+     * or descriptive tracks while an original exists), then a stream within the data budget.
      */
     fun bestIndex(candidates: List<Candidate>): Int {
         if (candidates.isEmpty()) throw ContentError.Unplayable("No audio-only streams available")
         return candidates.indices.maxWith(
             compareBy<Int>(
                 { trackRank(candidates[it].trackType) },
-                { if (candidates[it].mimeType.contains("webm")) 1 else 0 },
-                { candidates[it].bitrate },
+                { if (candidates[it].bitrateKbps <= DATA_SAVER_MAX_KBPS) 1 else 0 },
+                // Within the budget: Opus first, then the highest bitrate.
+                // Above it: the smallest stream first, whatever the codec.
+                { if (withinBudget(candidates[it])) opus(candidates[it]) else -candidates[it].bitrateKbps },
+                { if (withinBudget(candidates[it])) candidates[it].bitrateKbps else opus(candidates[it]) },
             )
         )
     }
+
+    private fun withinBudget(c: Candidate) = c.bitrateKbps <= DATA_SAVER_MAX_KBPS
+    private fun opus(c: Candidate) = if (c.mimeType.contains("webm")) 1 else 0
 
     private fun trackRank(type: AudioTrackType?): Int = when (type) {
         AudioTrackType.ORIGINAL -> 3

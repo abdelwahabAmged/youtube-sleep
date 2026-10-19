@@ -8,48 +8,55 @@ import org.schabi.newpipe.extractor.stream.AudioTrackType
 
 class AudioStreamSelectorTest {
 
+    /** What YouTube typically offers for one video: Opus 50/70/160 and AAC 48/128 kbps. */
+    private val typical = listOf(
+        Candidate("audio/mp4", 48),
+        Candidate("audio/mp4", 128),
+        Candidate("audio/webm", 50),
+        Candidate("audio/webm", 70),
+        Candidate("audio/webm", 160),
+    )
+
     @Test
-    fun `prefers highest bitrate opus webm`() {
-        val candidates = listOf(
-            Candidate("audio/webm", 64_000),
-            Candidate("audio/webm", 160_000),
-            Candidate("audio/mp4", 256_000),
-        )
+    fun `picks 70 kbps opus, not the 160 kbps stream`() {
+        assertEquals(3, AudioStreamSelector.bestIndex(typical))
+    }
+
+    @Test
+    fun `without opus picks the AAC stream within the data budget`() {
+        val candidates = listOf(Candidate("audio/mp4", 128), Candidate("audio/mp4", 48))
         assertEquals(1, AudioStreamSelector.bestIndex(candidates))
     }
 
     @Test
-    fun `falls back to m4a aac when no opus`() {
-        val candidates = listOf(
-            Candidate("audio/mp4", 128_000),
-            Candidate("audio/mp4", 64_000),
-        )
-        assertEquals(0, AudioStreamSelector.bestIndex(candidates))
+    fun `when everything is above the budget the smallest wins`() {
+        val candidates = listOf(Candidate("audio/webm", 160), Candidate("audio/mp4", 128))
+        assertEquals(1, AudioStreamSelector.bestIndex(candidates))
     }
 
     @Test
-    fun `original language wins over a better-quality auto-dubbed track`() {
+    fun `original language wins over a smaller auto-dubbed track`() {
         val candidates = listOf(
-            Candidate("audio/webm", 160_000, AudioTrackType.DUBBED),
-            Candidate("audio/webm", 160_000, AudioTrackType.DESCRIPTIVE),
-            Candidate("audio/mp4", 128_000, AudioTrackType.ORIGINAL),
+            Candidate("audio/webm", 70, AudioTrackType.DUBBED),
+            Candidate("audio/webm", 70, AudioTrackType.DESCRIPTIVE),
+            Candidate("audio/mp4", 128, AudioTrackType.ORIGINAL),
         )
         assertEquals(2, AudioStreamSelector.bestIndex(candidates))
     }
 
     @Test
-    fun `best quality among original tracks`() {
+    fun `data budget applies among original tracks`() {
         val candidates = listOf(
-            Candidate("audio/webm", 160_000, AudioTrackType.DUBBED),
-            Candidate("audio/webm", 70_000, AudioTrackType.ORIGINAL),
-            Candidate("audio/webm", 160_000, AudioTrackType.ORIGINAL),
+            Candidate("audio/webm", 70, AudioTrackType.DUBBED),
+            Candidate("audio/webm", 160, AudioTrackType.ORIGINAL),
+            Candidate("audio/webm", 70, AudioTrackType.ORIGINAL),
         )
         assertEquals(2, AudioStreamSelector.bestIndex(candidates))
     }
 
     @Test
     fun `dubbed track is used only when nothing else exists`() {
-        assertEquals(0, AudioStreamSelector.bestIndex(listOf(Candidate("audio/webm", 160_000, AudioTrackType.DUBBED))))
+        assertEquals(0, AudioStreamSelector.bestIndex(listOf(Candidate("audio/webm", 70, AudioTrackType.DUBBED))))
     }
 
     @Test(expected = ContentError.Unplayable::class)

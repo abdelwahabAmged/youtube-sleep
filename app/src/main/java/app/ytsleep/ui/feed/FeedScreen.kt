@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,7 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import app.ytsleep.ui.common.LoadMoreButton
+import app.ytsleep.ui.common.LoadMoreFooter
+import app.ytsleep.ui.common.LoadMoreOnScroll
 import app.ytsleep.ui.common.LoadingPlaceholder
 import app.ytsleep.ui.common.MediaItemRow
 import app.ytsleep.ui.common.StatusMessage
@@ -25,6 +27,8 @@ fun FeedScreen(navController: NavController, vm: FeedViewModel = viewModel()) {
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Home", "Subscriptions")
     val selectedKind = if (selectedTab == 0) FeedKind.HOME else FeedKind.SUBSCRIPTIONS
+    val homeListState = rememberLazyListState()
+    val subsListState = rememberLazyListState()
     LaunchedEffect(selectedKind) { vm.ensureLoaded(selectedKind) }
 
     Column(Modifier.fillMaxSize()) {
@@ -34,6 +38,10 @@ fun FeedScreen(navController: NavController, vm: FeedViewModel = viewModel()) {
             }
         }
         val state = if (selectedTab == 0) homeState else subsState
+        val listState = if (selectedTab == 0) homeListState else subsListState
+        LoadMoreOnScroll(listState, state.nextToken, state.isLoadingMore, state.loadMoreError) {
+            vm.loadMore(selectedKind)
+        }
         when {
             state.isLoading -> LoadingPlaceholder()
             state.error != null -> {
@@ -41,16 +49,15 @@ fun FeedScreen(navController: NavController, vm: FeedViewModel = viewModel()) {
                     ?: ("Retry" to { vm.retry(selectedKind) })
                 StatusMessage(error = state.error, onAction = action, actionLabel = label)
             }
-            else -> LazyColumn(Modifier.fillMaxSize()) {
+            else -> LazyColumn(Modifier.fillMaxSize(), state = listState) {
                 itemsIndexed(state.items, key = { index, item -> "$index:${item.videoId}" }) { _, item ->
                     MediaItemRow(item = item, onClick = { vm.play(item) })
                 }
                 item {
-                    LoadMoreButton(
+                    LoadMoreFooter(
                         nextToken = state.nextToken,
-                        isLoading = state.isLoadingMore,
                         error = state.loadMoreError,
-                        onLoadMore = { vm.loadMore(selectedKind) },
+                        onRetry = { vm.loadMore(selectedKind) },
                     )
                 }
             }

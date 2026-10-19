@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import app.ytsleep.YtSleepApp
 import app.ytsleep.data.db.HistoryEntry
 import app.ytsleep.update.UpdateState
+import app.ytsleep.youtube.ContentError
 import app.ytsleep.youtube.PlaylistSummary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,10 +45,17 @@ class StartViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         viewModelScope.launch {
+            // Show the last known playlists at once, then refresh them from YouTube.
+            playlists.value = container.playlistCache.read()
             try {
-                playlists.value = container.contentSource.myPlaylists()
-            } catch (_: Exception) {
-                // Offline or not signed in: the playlists section stays hidden.
+                val fresh = container.contentSource.myPlaylists()
+                playlists.value = fresh
+                container.playlistCache.write(fresh)
+            } catch (_: ContentError.NotSignedIn) {
+                playlists.value = emptyList()
+                container.playlistCache.clear()
+            } catch (_: ContentError) {
+                // Offline or YouTube trouble: keep showing the cached list.
             }
         }
     }

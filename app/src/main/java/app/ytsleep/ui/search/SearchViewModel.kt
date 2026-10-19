@@ -53,6 +53,7 @@ class SearchViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun loadMore() {
+        if (_state.value.isLoadingMore) return
         val token = _state.value.nextToken ?: return
         val q = _state.value.query
         viewModelScope.launch {

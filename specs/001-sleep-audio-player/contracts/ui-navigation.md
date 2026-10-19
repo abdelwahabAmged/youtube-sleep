@@ -1,7 +1,7 @@
 # Contract: Screens and Navigation
 
-All screens use the dark sleep theme (FR-014). There are no auto-advancing carousels and no
-infinite scroll (FR-013). Every tappable item stays inside the app: there are no external
+All screens use the dark sleep theme (FR-014). There are no auto-advancing carousels.
+Lists load their next page automatically while scrolling (FR-013). Every tappable item stays inside the app: there are no external
 intents to a browser or to YouTube (FR-020).
 
 ```text
@@ -12,9 +12,9 @@ Start (opening screen, FR-015)
 ├── [Update banner]            ── tap ─▶ installs update (only shown when an update is ready)
 └── Bottom bar: Start · Feed · Search · Settings
 
-Feed            tabs: Home | Subscriptions (FR-010) · list + "Load more" · tap ─▶ plays single item
-Search          query box · results + "Load more" · tap ─▶ plays single item
-Playlist        header (title, count) · items + "Load more" · "Play all" · tap item ─▶ queue from that item
+Feed            tabs: Home | Subscriptions (FR-010) · list with automatic paging · tap ─▶ plays single item
+Search          query box · results with automatic paging · tap ─▶ plays single item
+Playlist        header (title, count) · items with automatic paging · "Play all" · tap item ─▶ queue from that item
 Player (sheet)  thumbnail (static), title, channel, seek bar, elapsed/total,
                 ⏮ −15s ⏯ +30s ⏭, repeat toggle (off/one/playlist), sleep timer button
 Settings        Account (connect / reconnect / sign out / paste cookies), battery optimization,

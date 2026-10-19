@@ -7,12 +7,13 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
-import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.datasource.HttpDataSource
 import app.ytsleep.youtube.AudioStream
 import app.ytsleep.youtube.ContentError
 import app.ytsleep.youtube.ContentSource
 import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
 import java.util.concurrent.ConcurrentHashMap
 
 private const val SCHEME = "ytsleep"
@@ -153,10 +154,11 @@ class StreamResolvingDataSource(
     }
 
     @OptIn(UnstableApi::class)
-    class Factory(contentSource: ContentSource) : DataSource.Factory {
+    class Factory(contentSource: ContentSource, client: OkHttpClient) : DataSource.Factory {
         private val resolver = StreamResolver(contentSource)
-        private val httpFactory = DefaultHttpDataSource.Factory()
-            .setAllowCrossProtocolRedirects(true)
+        // The app-wide OkHttp client keeps connections alive, so each 10 MB range request reuses
+        // the open TLS connection instead of handshaking again.
+        private val httpFactory = OkHttpDataSource.Factory(client)
 
         override fun createDataSource(): DataSource = StreamResolvingDataSource(httpFactory, resolver)
     }

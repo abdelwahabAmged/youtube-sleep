@@ -49,7 +49,7 @@ The user connects their own YouTube account once. After that they can browse the
 **Acceptance Scenarios**:
 
 1. **Given** the user has connected their account, **When** they open the Feed screen, **Then** they see two tabs, Home (personalized recommendations) and Subscriptions (latest uploads from followed channels, newest first), each with thumbnails and with no Shorts and no sponsored/ad items.
-2. **Given** the feed is shown, **When** the user reaches the end of the loaded items, **Then** more items load only after an explicit "Load more" action (no automatic endless scrolling).
+2. **Given** the feed is shown, **When** the user scrolls near the end of the loaded items, **Then** more items load automatically; if loading fails, a "Try again" action is shown.
 3. **Given** the user has connected their account, **When** they open the Playlists screen, **Then** they see all their playlists with cover thumbnails and can open any one to see its items.
 4. **Given** a playlist is playing with the screen off, **When** the current item ends, **Then** the next non-Short item in the playlist starts automatically; when the last item ends, playback stops unless repeat is on (no unrelated autoplay).
 6. **Given** repeat is set to "repeat one" or "repeat playlist", **When** the current item or the last playlist item ends, **Then** the same item or the playlist restarts from the beginning, continuing until the user stops it or the sleep timer ends.
@@ -140,7 +140,7 @@ The user can set a timer (e.g. 15, 30, 45, 60, 90 minutes, or "end of current it
 - **FR-010**: Signed-in users MUST be able to view their feed as two separate tabs, both with thumbnails: Home (personalized YouTube recommendations) and Subscriptions (latest uploads from followed channels, newest first).
 - **FR-011**: Signed-in users MUST be able to view all their playlists and the items within each, with thumbnails.
 - **FR-012**: Shorts MUST be excluded from search results, both feed tabs, playlists (including the user's own) and any queue. An item counts as a Short if YouTube marks it as a Short OR its duration is 180 seconds or less.
-- **FR-013**: Lists (feed, search) MUST load in finite pages, with further items loaded only on an explicit user action; no automatic infinite scrolling.
+- **FR-013**: Lists (feed, search, playlists) MUST load in pages; the next page loads automatically as the user scrolls near the end (infinite scroll, owner's choice 2026-10-19). A page that fails to load shows the error with a "Try again" action instead of retrying in a loop.
 
 **Sleep experience**
 

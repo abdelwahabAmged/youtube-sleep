@@ -43,6 +43,7 @@ class PlaylistViewModel(app: Application, private val playlistId: String) : Andr
     }
 
     fun loadMore() {
+        if (_state.value.isLoadingMore) return
         val token = _state.value.nextToken ?: return
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoadingMore = true, loadMoreError = null)

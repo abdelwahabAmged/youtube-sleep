@@ -11,6 +11,7 @@ data class MediaItem(
     val isLive: Boolean,
 )
 
+@kotlinx.serialization.Serializable
 data class PlaylistSummary(
     val playlistId: String,      // includes special ids WL (Watch later) and LL (Liked videos)
     val title: String,

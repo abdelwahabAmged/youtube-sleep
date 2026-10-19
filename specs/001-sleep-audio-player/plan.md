@@ -77,7 +77,7 @@ lets the user search, browse the Home and Subscriptions feeds, and play their ow
 | III. Background & Screen-Off (Mobile-First) | Media3 `MediaSessionService` foreground service with lock-screen controls. Installable APK with its own icon. Updates: the self-updater downloads in the background and opens the system install prompt by itself, so the user's single action is "Install". Platform limits are documented: Android 11 can't install silently, so one confirmation per update is the minimum; "Install unknown apps" and the battery exemption are granted once during setup | ✅ |
 | IV. Zero-Cost | GitHub Releases (free), NewPipeExtractor (free, no quota) and InnerTube (no quota). No servers, no Play fee | ✅ |
 | V. Personal Scope & Simplicity | Single user, single Gradle module, no DI framework, no backend. Content is used only for personal playback | ✅ |
-| VI. Sleep-First | Fixed dark theme, no shimmer or animations. Opens on the start screen, not a feed. Feeds are paged with "Load more" (no infinite scroll). No autoplay of unrelated items. No notifications besides playback | ✅ |
+| VI. Sleep-First | Fixed dark theme, no shimmer or animations. Opens on the start screen, not a feed. Lists page automatically while scrolling (constitution 1.2.0). No autoplay of unrelated items. No notifications besides playback | ✅ |
 | Platform: device/OS stated | Android 11, confirmed (spec Assumptions) | ✅ |
 | Updates: dev publish + ≤1 phone action | `scripts/release.sh` on the dev machine, then one "Install" tap on the auto-opened system prompt | ✅ |
 | Content source fragility documented | research R2/R3: risks and the fix-and-release mitigation | ✅ |

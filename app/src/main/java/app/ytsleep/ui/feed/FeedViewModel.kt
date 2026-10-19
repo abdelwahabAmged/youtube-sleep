@@ -61,6 +61,7 @@ class FeedViewModel(app: Application) : AndroidViewModel(app) {
 
     fun loadMore(kind: FeedKind) {
         val state = stateFor(kind)
+        if (state.value.isLoadingMore) return
         val token = state.value.nextToken ?: return
         viewModelScope.launch {
             state.value = state.value.copy(isLoadingMore = true, loadMoreError = null)

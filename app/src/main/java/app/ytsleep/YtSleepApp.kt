@@ -2,9 +2,12 @@ package app.ytsleep
 
 import androidx.annotation.OptIn
 import android.app.Application
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import androidx.media3.common.util.UnstableApi
 import androidx.room.Room
 import app.ytsleep.auth.AccountStore
+import app.ytsleep.data.PlaylistCache
 import app.ytsleep.data.SettingsStore
 import app.ytsleep.data.db.AppDatabase
 import app.ytsleep.playback.PlayerConnection
@@ -36,6 +39,8 @@ class AppContainer(app: Application) {
 
     val accountStore = AccountStore(app)
 
+    val playlistCache = PlaylistCache(app)
+
     val contentSource: ContentSource by lazy {
         YouTubeContentSource(okHttpClient, app)
     }
@@ -50,7 +55,7 @@ class AppContainer(app: Application) {
 }
 
 @OptIn(UnstableApi::class)
-class YtSleepApp : Application() {
+class YtSleepApp : Application(), ImageLoaderFactory {
 
     lateinit var container: AppContainer
         private set
@@ -64,4 +69,14 @@ class YtSleepApp : Application() {
 
         container.updateChecker.checkNow()
     }
+
+    /**
+     * Thumbnails share the app's connection pool and are served straight from the disk cache
+     * (YouTube thumbnails don't change), so revisited lists show images instantly.
+     */
+    override fun newImageLoader(): ImageLoader = ImageLoader.Builder(this)
+        .okHttpClient(container.okHttpClient)
+        .respectCacheHeaders(false)
+        .crossfade(false)
+        .build()
 }

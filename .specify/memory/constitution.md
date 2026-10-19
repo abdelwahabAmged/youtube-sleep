@@ -1,7 +1,10 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.0.0 → 1.1.0
+Version change: 1.1.0 → 1.2.0
+Amendment (1.2.0): Principle VI now allows automatic paging (infinite scroll) in lists, at the
+  owner's request; other engagement features (unrelated autoplay, nudging notifications) remain banned.
+Earlier: 1.0.0 → 1.1.0
 Amendment (1.1.0): PWA no longer mandated; install technology left to the plan. Added an
   easy-update requirement (Principle III + Platform & Technical Constraints "Updates").
 Initial adoption (1.0.0): all template placeholders replaced
@@ -95,8 +98,9 @@ person.
 ### VI. Sleep-First Experience
 
 - The UI MUST default to a dark, low-brightness theme with no bright flashes or animations.
-- The app MUST NOT include engagement-driving features (infinite feeds, autoplay of
-  unrelated recommendations, notifications nudging the user to open the app).
+- The app MUST NOT include engagement-driving features (autoplay of unrelated
+  recommendations, notifications nudging the user to open the app). Lists MAY load further
+  pages automatically while scrolling (owner's choice, amendment 1.2.0); Shorts stay excluded.
 - Interactions needed to start listening MUST be minimal so the user can put the phone down
   quickly.
 
@@ -144,4 +148,4 @@ the phone and fall asleep.
 - Every spec, plan, and task list MUST be checked against this constitution; unresolved
   conflicts block implementation until the design or the constitution is changed.
 
-**Version**: 1.1.0 | **Ratified**: 2026-10-19 | **Last Amended**: 2026-10-19
+**Version**: 1.2.0 | **Ratified**: 2026-10-19 | **Last Amended**: 2026-10-19

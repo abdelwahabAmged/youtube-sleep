@@ -2,6 +2,7 @@ package app.ytsleep.auth
 
 import android.content.Context
 import android.webkit.CookieManager
+import app.ytsleep.data.PlaylistCache
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -55,5 +56,6 @@ class AccountStore(private val context: Context) {
             it.remove(Keys.expired)
         }
         CookieManager.getInstance().removeAllCookies(null)
+        PlaylistCache(context).clear()
     }
 }

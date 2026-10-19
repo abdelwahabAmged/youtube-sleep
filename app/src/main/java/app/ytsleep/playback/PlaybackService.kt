@@ -81,7 +81,7 @@ class PlaybackService : MediaSessionService() {
         // DefaultDataSource handles file/asset URIs itself and hands ytsleep:// to our resolver.
         val dataSourceFactory = DefaultDataSource.Factory(
             this,
-            StreamResolvingDataSource.Factory(container.contentSource),
+            StreamResolvingDataSource.Factory(container.contentSource, container.okHttpClient),
         )
 
         player = ExoPlayer.Builder(this, audioOnlyRenderers)

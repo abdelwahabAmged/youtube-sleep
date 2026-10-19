@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -15,7 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import app.ytsleep.ui.common.LoadMoreButton
+import app.ytsleep.ui.common.LoadMoreFooter
+import app.ytsleep.ui.common.LoadMoreOnScroll
 import app.ytsleep.ui.common.LoadingPlaceholder
 import app.ytsleep.ui.common.MediaItemRow
 import app.ytsleep.ui.common.StatusMessage
@@ -26,6 +28,8 @@ fun SearchScreen(
     vm: SearchViewModel = viewModel(),
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
+    val listState = rememberLazyListState()
+    LoadMoreOnScroll(listState, state.nextToken, state.isLoadingMore, state.loadMoreError, onLoadMore = vm::loadMore)
     val keyboard = LocalSoftwareKeyboardController.current
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -50,16 +54,15 @@ fun SearchScreen(
                 error = state.error!!,
                 modifier = Modifier.fillMaxSize(),
             )
-            else -> LazyColumn(modifier = Modifier.fillMaxSize()) {
+            else -> LazyColumn(modifier = Modifier.fillMaxSize(), state = listState) {
                 itemsIndexed(state.items, key = { index, item -> "$index:${item.videoId}" }) { _, item ->
                     MediaItemRow(item = item, onClick = { vm.play(item) })
                 }
                 item {
-                    LoadMoreButton(
+                    LoadMoreFooter(
                         nextToken = state.nextToken,
-                        isLoading = state.isLoadingMore,
                         error = state.loadMoreError,
-                        onLoadMore = vm::loadMore,
+                        onRetry = vm::loadMore,
                     )
                 }
             }

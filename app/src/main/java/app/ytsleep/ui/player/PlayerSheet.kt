@@ -59,8 +59,8 @@ fun PlayerSheetHost(modifier: Modifier = Modifier, vm: PlayerViewModel = viewMod
                             Text(
                                 text = it,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 2,
+                                color = MaterialTheme.colorScheme.error,
+                                maxLines = 3,
                             )
                         }
                     }

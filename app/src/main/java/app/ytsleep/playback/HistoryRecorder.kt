@@ -34,9 +34,14 @@ class HistoryRecorder(
     private var current: MediaItem? = null
     private var currentDurationMs: Long = C.TIME_UNSET
     private var lastPositionMs = 0L
+    // Only items whose audio actually started are recorded, so unplayable ones never show up
+    // under "Continue listening" or "Recent".
+    private var currentPlayed = false
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         if (isPlaying) {
+            currentPlayed = true
+            saveCurrent()
             startPeriodicSave()
         } else {
             saveJob?.cancel()
@@ -46,7 +51,7 @@ class HistoryRecorder(
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         val previous = current
-        if (previous != null) {
+        if (previous != null && currentPlayed) {
             val ended = reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO ||
                 reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT
             val endPosition = if (ended && currentDurationMs != C.TIME_UNSET) currentDurationMs else lastPositionMs
@@ -55,7 +60,7 @@ class HistoryRecorder(
         current = mediaItem
         currentDurationMs = C.TIME_UNSET
         lastPositionMs = player.currentPosition
-        if (mediaItem != null) save(mediaItem, lastPositionMs, C.TIME_UNSET)
+        currentPlayed = false
     }
 
     private fun startPeriodicSave() {
@@ -69,6 +74,7 @@ class HistoryRecorder(
     }
 
     private fun saveCurrent() {
+        if (!currentPlayed) return
         val item = player.currentMediaItem ?: return
         current = item
         lastPositionMs = player.currentPosition

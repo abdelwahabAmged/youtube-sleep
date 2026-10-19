@@ -94,6 +94,95 @@
                "image": {
                 "sources": [
                  {
+                  "url": "https://i.ytimg.com/vi/lockVid0001/hq720.jpg?small",
+                  "width": 360,
+                  "height": 202
+                 },
+                 {
+                  "url": "https://i.ytimg.com/vi/lockVid0001/hq720.jpg?large",
+                  "width": 720,
+                  "height": 404
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailBottomOverlayViewModel": {
+                  "badges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "text": "1:02:03",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ]
+                 }
+                }
+               ]
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Members early access"
+               },
+               "metadata": {
+                "contentMetadataViewModel": {
+                 "metadataRows": [
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "Calm Channel"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "1K views"
+                     }
+                    },
+                    {
+                     "text": {
+                      "content": "2 days ago"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "badges": [
+                    {
+                     "badgeViewModel": {
+                      "badgeText": "Members only",
+                      "badgeStyle": "BADGE_MEMBERS_ONLY",
+                      "iconName": "SPONSORSHIP_STAR"
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "contentId": "membersVid1",
+             "contentType": "LOCKUP_CONTENT_TYPE_VIDEO"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
                   "url": "https://i.ytimg.com/vi/lockVid0002/hq720.jpg?small",
                   "width": 360,
                   "height": 202

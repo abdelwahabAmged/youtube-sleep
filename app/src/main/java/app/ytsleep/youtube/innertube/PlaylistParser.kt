@@ -34,6 +34,7 @@ object PlaylistParser {
         val videoId = obj["videoId"]?.jsonPrimitive?.contentOrNull ?: return null
         // Deleted or private videos stay in playlists but can't be played.
         if (obj["isPlayable"]?.jsonPrimitive?.contentOrNull == "false") return null
+        if (LockupParser.isMembersOnly(obj["badges"])) return null
 
         val title = obj["title"]?.let {
             when (it) {

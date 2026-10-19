@@ -51,6 +51,7 @@ object FeedParser {
 
     private fun parseVideoRenderer(obj: JsonObject, forceShort: Boolean = false): MediaItem? {
         val videoId = obj["videoId"]?.jsonPrimitive?.contentOrNull ?: return null
+        if (LockupParser.isMembersOnly(obj["badges"])) return null
 
         val title = obj["title"]?.let {
             it.jsonObject["runs"]?.jsonArray?.firstOrNull()?.jsonObject?.get("text")?.jsonPrimitive?.contentOrNull

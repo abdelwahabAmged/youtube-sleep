@@ -25,6 +25,7 @@ object LockupParser {
     fun video(lockup: JsonObject): MediaItem? {
         if (lockup.string("contentType") != TYPE_VIDEO) return null
         val videoId = lockup.string("contentId") ?: return null
+        if (isMembersOnly(lockup)) return null
         val badges = badgeTexts(lockup["contentImage"])
         if (badges.any { it.equals("LIVE", ignoreCase = true) || it.equals("Upcoming", ignoreCase = true) }) return null
 
@@ -65,6 +66,22 @@ object LockupParser {
             ?: renderer.values.firstNotNullOfOrNull(::continuationToken)
         is JsonArray -> renderer.firstNotNullOfOrNull(::continuationToken)
         else -> null
+    }
+
+    private val MEMBERS_ONLY_STYLES = setOf("BADGE_MEMBERS_ONLY", "BADGE_STYLE_TYPE_MEMBERS_ONLY")
+
+    /**
+     * Members-only videos can't be played without a channel membership, and the app fetches
+     * audio anonymously, so they are hidden. Both the lockup and the older renderer layouts
+     * mark them with a members-only badge style.
+     */
+    fun isMembersOnly(element: JsonElement?): Boolean = when (element) {
+        is JsonObject -> element.entries.any { (k, v) ->
+            ((k == "badgeStyle" || k == "style") && (v as? kotlinx.serialization.json.JsonPrimitive)?.contentOrNull in MEMBERS_ONLY_STYLES) ||
+                isMembersOnly(v)
+        }
+        is JsonArray -> element.any(::isMembersOnly)
+        else -> false
     }
 
     fun parseDuration(text: String): Int? {

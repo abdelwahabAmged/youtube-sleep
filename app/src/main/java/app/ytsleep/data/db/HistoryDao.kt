@@ -17,6 +17,9 @@ interface HistoryDao {
     @Query("SELECT * FROM history ORDER BY lastPlayedAt DESC LIMIT :limit")
     fun recent(limit: Int = 20): Flow<List<HistoryEntry>>
 
+    @Query("DELETE FROM history WHERE videoId = :videoId")
+    suspend fun delete(videoId: String)
+
     @Query("UPDATE history SET lastPositionMs = :positionMs, lastPlayedAt = :playedAt WHERE videoId = :videoId")
     suspend fun updatePosition(videoId: String, positionMs: Long, playedAt: Long)
 

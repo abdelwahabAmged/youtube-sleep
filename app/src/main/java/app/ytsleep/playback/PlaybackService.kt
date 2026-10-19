@@ -114,6 +114,10 @@ class PlaybackService : MediaSessionService() {
         player.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 val failure = PlaybackFailure.classify(error)
+                if (failure is PlaybackFailure.Unplayable) {
+                    // Drop it from history so it doesn't come back as "Continue listening".
+                    player.currentMediaItem?.mediaId?.let { id -> serviceScope.launch { container.database.historyDao().delete(id) } }
+                }
                 if (!errorPolicy.onItemError(player, failure)) {
                     playerError = failure.message
                     publishExtras()

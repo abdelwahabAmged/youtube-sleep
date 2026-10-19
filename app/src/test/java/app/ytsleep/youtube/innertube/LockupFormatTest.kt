@@ -30,7 +30,7 @@ class LockupFormatTest {
     }
 
     @Test
-    fun `feed drops shorts, live, upcoming and playlist lockups`() {
+    fun `feed drops shorts, members-only, live, upcoming and playlist lockups`() {
         val ids = ContentFilter.filter(FeedParser.parse(fixture("home_lockup.json")).first).map { it.videoId }
         assertEquals(listOf("lockVid0001"), ids)
     }

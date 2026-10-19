@@ -10,6 +10,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -29,6 +31,9 @@ fun SearchScreen(
 ) {
     val state by vm.state.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
+    val focusRequester = remember { FocusRequester() }
+    // Open ready to type, unless we're coming back to earlier results.
+    LaunchedEffect(Unit) { if (state.query.isEmpty()) focusRequester.requestFocus() }
     LoadMoreOnScroll(listState, state.nextToken, state.isLoadingMore, state.loadMoreError, onLoadMore = vm::loadMore)
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -45,7 +50,8 @@ fun SearchScreen(
             }),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .focusRequester(focusRequester),
         )
 
         when {

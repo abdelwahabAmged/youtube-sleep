@@ -14,4 +14,5 @@ interface ContentSource {
     suspend fun myPlaylists(): List<PlaylistSummary>
     suspend fun playlistItems(playlistId: String, nextToken: String? = null): Page<MediaItem>
     suspend fun resolveAudio(videoId: String): AudioStream
+    suspend fun addToPlaylist(playlistId: String, videoId: String)
 }

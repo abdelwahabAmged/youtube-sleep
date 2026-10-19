@@ -8,17 +8,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import app.ytsleep.data.db.HistoryEntry
 import app.ytsleep.ui.common.PlaylistRow
+import app.ytsleep.ui.common.Thumbnail
 import app.ytsleep.ui.playlistRoute
 import app.ytsleep.ui.common.formatDuration
 import app.ytsleep.update.UpdateState
-import coil.compose.AsyncImage
 
 @Composable
 fun StartScreen(
@@ -104,21 +103,33 @@ private fun SectionTitle(text: String) {
 
 @Composable
 private fun HistoryRow(entry: HistoryEntry, showPosition: Boolean, modifier: Modifier = Modifier) {
+    val durationMs = entry.durationSeconds?.let { it * 1000L }
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        AsyncImage(
-            model = entry.thumbnailUrl,
-            contentDescription = null,
-            modifier = Modifier.width(96.dp).height(54.dp),
-            contentScale = ContentScale.Crop,
+        Thumbnail(
+            url = entry.thumbnailUrl,
+            badge = entry.durationSeconds?.let(::formatDuration),
+            // Shows how far the item was listened to, like YouTube's red resume bar.
+            progress = durationMs?.takeIf { it > 0 && entry.lastPositionMs > 0 }
+                ?.let { entry.lastPositionMs.toFloat() / it },
+            modifier = Modifier.width(if (showPosition) 176.dp else 152.dp),
         )
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(entry.title, style = MaterialTheme.typography.bodyMedium, maxLines = 2)
-            Text(entry.channelName, style = MaterialTheme.typography.bodySmall, maxLines = 1)
-            if (showPosition && entry.lastPositionMs > 0) {
-                val position = formatDuration((entry.lastPositionMs / 1000).toInt())
-                val total = entry.durationSeconds?.let { " / ${formatDuration(it)}" }.orEmpty()
-                Text("$position$total", style = MaterialTheme.typography.labelSmall)
+            Text(entry.title, style = MaterialTheme.typography.bodyMedium, maxLines = 3)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                entry.channelName,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+            )
+            if (showPosition && entry.lastPositionMs > 0 && durationMs != null) {
+                val leftMin = ((durationMs - entry.lastPositionMs) / 60_000).coerceAtLeast(1)
+                Text(
+                    "$leftMin min left",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }

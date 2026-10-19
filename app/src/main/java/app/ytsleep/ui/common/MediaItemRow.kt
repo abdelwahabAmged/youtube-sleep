@@ -2,58 +2,62 @@ package app.ytsleep.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import app.ytsleep.youtube.MediaItem
-import coil.compose.AsyncImage
 
 @Composable
 fun MediaItemRow(
     item: MediaItem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showSaveButton: Boolean = true,
 ) {
+    var showSaveDialog by remember { mutableStateOf(false) }
+    if (showSaveDialog) AddToPlaylistDialog(item, onDismiss = { showSaveDialog = false })
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = if (showSaveButton) 0.dp else 16.dp),
         verticalAlignment = Alignment.Top,
     ) {
-        AsyncImage(
-            model = item.thumbnailUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .width(120.dp)
-                .height(68.dp),
-            contentScale = ContentScale.Crop,
+        Thumbnail(
+            url = item.thumbnailUrl,
+            badge = if (item.isLive) "LIVE" else item.durationSeconds?.let(::formatDuration),
+            modifier = Modifier.width(168.dp),
         )
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = item.title,
-                maxLines = 2,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            Text(text = item.title, maxLines = 3, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
             Text(
                 text = item.channelName,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(2.dp))
-            if (item.isLive) {
-                Text("Live", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error)
-            } else {
-                item.durationSeconds?.let {
-                    Text(formatDuration(it), style = MaterialTheme.typography.labelSmall)
-                }
+        }
+        if (showSaveButton) {
+            IconButton(onClick = { showSaveDialog = true }) {
+                Icon(
+                    Icons.AutoMirrored.Filled.PlaylistAdd,
+                    contentDescription = "Save to playlist",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }

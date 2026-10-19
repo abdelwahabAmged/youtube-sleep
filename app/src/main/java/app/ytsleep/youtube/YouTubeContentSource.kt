@@ -102,6 +102,10 @@ class YouTubeContentSource(
         return Page(items = mapStreams(result.items), nextToken = remember(url, result.nextPage))
     }
 
+    override suspend fun addToPlaylist(playlistId: String, videoId: String) = io {
+        innerTube.addToPlaylist(playlistId, videoId)
+    }
+
     override suspend fun resolveAudio(videoId: String): AudioStream = io {
         val info = StreamInfo.getInfo(yt, "https://www.youtube.com/watch?v=$videoId")
         if (info.audioStreams.isEmpty()) throw ContentError.Unplayable("No audio stream")

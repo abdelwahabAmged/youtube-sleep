@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -60,6 +63,19 @@ class InnerTubeClient(
         val body = """{"continuation":"$token",$context_body}"""
 
         postInnerTube("browse", body, cookieMap, sapisid)
+    }
+
+    /** Adds [videoId] to one of the user's playlists (including Watch later, "WL"). */
+    suspend fun addToPlaylist(playlistId: String, videoId: String) = withContext(Dispatchers.IO) {
+        val cookieMap = cookies()
+        val sapisid = cookieMap["SAPISID"] ?: throw ContentError.NotSignedIn
+        // JsonPrimitive quotes and escapes the ids, so they can't break the request body.
+        val body = """{"playlistId":${JsonPrimitive(playlistId)},""" +
+            """"actions":[{"action":"ACTION_ADD_VIDEO","addedVideoId":${JsonPrimitive(videoId)}}],$context_body}"""
+        val result = postInnerTube("browse/edit_playlist", body, cookieMap, sapisid)
+        if (result["status"]?.jsonPrimitive?.contentOrNull != "STATUS_SUCCEEDED") {
+            throw ContentError.SourceChanged("Adding to playlist was not accepted")
+        }
     }
 
     /** Marks the stored session expired so Settings offers "Reconnect", then signals the caller. */

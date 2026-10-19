@@ -7,10 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import app.ytsleep.youtube.PlaylistSummary
-import coil.compose.AsyncImage
 
 @Composable
 fun PlaylistRow(
@@ -25,18 +23,16 @@ fun PlaylistRow(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AsyncImage(
-            model = playlist.thumbnailUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .size(64.dp),
-            contentScale = ContentScale.Crop,
-        )
+        Thumbnail(url = playlist.thumbnailUrl, modifier = Modifier.width(128.dp))
         Spacer(Modifier.width(12.dp))
-        Column {
-            Text(playlist.title, style = MaterialTheme.typography.bodyMedium, maxLines = 1)
+        Column(Modifier.weight(1f)) {
+            Text(playlist.title, style = MaterialTheme.typography.bodyLarge, maxLines = 2)
             playlist.itemCount?.let {
-                Text("$it items", style = MaterialTheme.typography.bodySmall)
+                Text(
+                    if (it == 1) "1 video" else "$it videos",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }

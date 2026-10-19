@@ -1,0 +1,22 @@
+# Gradle
+.gradle/
+.kotlin/
+build/
+out/
+local.properties
+
+# Android signing
+*.jks
+*.keystore
+app/release/
+update.json
+
+# IDE
+.idea/
+*.iml
+
+# Generated
+*.class
+*.log
+.DS_Store
+Thumbs.db

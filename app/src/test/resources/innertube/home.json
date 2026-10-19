@@ -1,0 +1,80 @@
+{
+  "contents": {
+    "twoColumnBrowseResultsRenderer": {
+      "tabs": [{
+        "tabRenderer": {
+          "content": {
+            "richGridRenderer": {
+              "contents": [
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "videoRenderer": {
+                        "videoId": "abc12345678",
+                        "title": {"runs": [{"text": "Rain sounds 10 hours"}]},
+                        "ownerText": {"runs": [{"text": "Relaxing Channel"}]},
+                        "lengthText": {"simpleText": "10:00:00"},
+                        "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/abc12345678/hqdefault.jpg", "width": 480, "height": 360}]}
+                      }
+                    }
+                  }
+                },
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "reelItemRenderer": {
+                        "videoId": "short123456",
+                        "headline": {"simpleText": "Funny short"},
+                        "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/short123456/hqdefault.jpg"}]}
+                      }
+                    }
+                  }
+                },
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "videoRenderer": {
+                        "videoId": "xyz98765432",
+                        "title": {"runs": [{"text": "Short video under 3min"}]},
+                        "ownerText": {"runs": [{"text": "Quick Channel"}]},
+                        "lengthText": {"simpleText": "2:45"},
+                        "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/xyz98765432/hqdefault.jpg"}]}
+                      }
+                    }
+                  }
+                },
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "adSlotRenderer": {
+                        "adSlotMetadata": {}
+                      }
+                    }
+                  }
+                },
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "unknownNewRenderer2025": {
+                        "someField": "ignored"
+                      }
+                    }
+                  }
+                },
+                {
+                  "continuationItemRenderer": {
+                    "continuationEndpoint": {
+                      "continuationCommand": {
+                        "token": "cont_token_home_1"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }]
+    }
+  }
+}

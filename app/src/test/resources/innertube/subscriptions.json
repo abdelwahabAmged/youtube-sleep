@@ -1,0 +1,29 @@
+{
+  "contents": {
+    "twoColumnBrowseResultsRenderer": {
+      "tabs": [{
+        "tabRenderer": {
+          "content": {
+            "richGridRenderer": {
+              "contents": [
+                {
+                  "richItemRenderer": {
+                    "content": {
+                      "videoRenderer": {
+                        "videoId": "sub12345678",
+                        "title": {"runs": [{"text": "Subscriptions video"}]},
+                        "ownerText": {"runs": [{"text": "Subscribed Channel"}]},
+                        "lengthText": {"simpleText": "45:00"},
+                        "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/sub12345678/hqdefault.jpg"}]}
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }]
+    }
+  }
+}

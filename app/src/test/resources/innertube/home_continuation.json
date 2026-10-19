@@ -1,0 +1,21 @@
+{
+  "onResponseReceivedActions": [{
+    "appendContinuationItemsAction": {
+      "continuationItems": [
+        {
+          "richItemRenderer": {
+            "content": {
+              "videoRenderer": {
+                "videoId": "cont11111111",
+                "title": {"runs": [{"text": "Continued result"}]},
+                "ownerText": {"runs": [{"text": "Some Channel"}]},
+                "lengthText": {"simpleText": "5:30"},
+                "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/cont11111111/hqdefault.jpg"}]}
+              }
+            }
+          }
+        }
+      ]
+    }
+  }]
+}

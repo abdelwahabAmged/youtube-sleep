@@ -1,0 +1,17 @@
+{
+  "onResponseReceivedActions": [{
+    "appendContinuationItemsAction": {
+      "continuationItems": [
+        {
+          "playlistVideoRenderer": {
+            "videoId": "plcont11111",
+            "title": {"runs": [{"text": "Next playlist video"}]},
+            "shortBylineText": {"runs": [{"text": "Creator"}]},
+            "lengthText": {"simpleText": "8:00"},
+            "thumbnail": {"thumbnails": [{"url": "https://i.ytimg.com/vi/plcont11111/hqdefault.jpg"}]}
+          }
+        }
+      ]
+    }
+  }]
+}

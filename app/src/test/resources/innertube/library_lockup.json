@@ -1,0 +1,258 @@
+{
+ "contents": {
+  "twoColumnBrowseResultsRenderer": {
+   "tabs": [
+    {
+     "tabRenderer": {
+      "content": {
+       "richGridRenderer": {
+        "contents": [
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/LLthumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "353 videos",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Liked videos"
+               }
+              }
+             },
+             "contentId": "LL",
+             "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/WLthumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "1,036 videos",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Watch later"
+               }
+              }
+             },
+             "contentId": "WL",
+             "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/YSthumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "12 videos",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Saved Shorts"
+               }
+              }
+             },
+             "contentId": "YS",
+             "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/PLfakePlaylist01thumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "36 videos",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Sleep stories"
+               }
+              }
+             },
+             "contentId": "PLfakePlaylist01",
+             "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/PLfakePodcast01thumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "3 episodes",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "A podcast"
+               }
+              }
+             },
+             "contentId": "PLfakePodcast01",
+             "contentType": "LOCKUP_CONTENT_TYPE_PODCAST"
+            }
+           }
+          }
+         }
+        ]
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

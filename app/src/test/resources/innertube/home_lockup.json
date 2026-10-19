@@ -1,0 +1,404 @@
+{
+ "contents": {
+  "twoColumnBrowseResultsRenderer": {
+   "tabs": [
+    {
+     "tabRenderer": {
+      "content": {
+       "richGridRenderer": {
+        "contents": [
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
+                  "url": "https://i.ytimg.com/vi/lockVid0001/hq720.jpg?small",
+                  "width": 360,
+                  "height": 202
+                 },
+                 {
+                  "url": "https://i.ytimg.com/vi/lockVid0001/hq720.jpg?large",
+                  "width": 720,
+                  "height": 404
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailBottomOverlayViewModel": {
+                  "badges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "text": "1:02:03",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ]
+                 }
+                }
+               ]
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Ocean waves for sleep"
+               },
+               "metadata": {
+                "contentMetadataViewModel": {
+                 "metadataRows": [
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "Calm Channel"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "1K views"
+                     }
+                    },
+                    {
+                     "text": {
+                      "content": "2 days ago"
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "contentId": "lockVid0001",
+             "contentType": "LOCKUP_CONTENT_TYPE_VIDEO"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
+                  "url": "https://i.ytimg.com/vi/lockVid0002/hq720.jpg?small",
+                  "width": 360,
+                  "height": 202
+                 },
+                 {
+                  "url": "https://i.ytimg.com/vi/lockVid0002/hq720.jpg?large",
+                  "width": 720,
+                  "height": 404
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailBottomOverlayViewModel": {
+                  "badges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "text": "2:30",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ]
+                 }
+                }
+               ]
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Short clip by duration"
+               },
+               "metadata": {
+                "contentMetadataViewModel": {
+                 "metadataRows": [
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "Clip Channel"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "1K views"
+                     }
+                    },
+                    {
+                     "text": {
+                      "content": "2 days ago"
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "contentId": "lockVid0002",
+             "contentType": "LOCKUP_CONTENT_TYPE_VIDEO"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
+                  "url": "https://i.ytimg.com/vi/lockLive001/hq720.jpg?small",
+                  "width": 360,
+                  "height": 202
+                 },
+                 {
+                  "url": "https://i.ytimg.com/vi/lockLive001/hq720.jpg?large",
+                  "width": 720,
+                  "height": 404
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailBottomOverlayViewModel": {
+                  "badges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "text": "LIVE",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ]
+                 }
+                }
+               ]
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Live radio"
+               },
+               "metadata": {
+                "contentMetadataViewModel": {
+                 "metadataRows": [
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "Radio Channel"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "1K views"
+                     }
+                    },
+                    {
+                     "text": {
+                      "content": "2 days ago"
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "contentId": "lockLive001",
+             "contentType": "LOCKUP_CONTENT_TYPE_VIDEO"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "thumbnailViewModel": {
+               "image": {
+                "sources": [
+                 {
+                  "url": "https://i.ytimg.com/vi/lockSoon001/hq720.jpg?small",
+                  "width": 360,
+                  "height": 202
+                 },
+                 {
+                  "url": "https://i.ytimg.com/vi/lockSoon001/hq720.jpg?large",
+                  "width": 720,
+                  "height": 404
+                 }
+                ]
+               },
+               "overlays": [
+                {
+                 "thumbnailBottomOverlayViewModel": {
+                  "badges": [
+                   {
+                    "thumbnailBadgeViewModel": {
+                     "text": "Upcoming",
+                     "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                    }
+                   }
+                  ]
+                 }
+                }
+               ]
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Premiere soon"
+               },
+               "metadata": {
+                "contentMetadataViewModel": {
+                 "metadataRows": [
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "Radio Channel"
+                     }
+                    }
+                   ]
+                  },
+                  {
+                   "metadataParts": [
+                    {
+                     "text": {
+                      "content": "1K views"
+                     }
+                    },
+                    {
+                     "text": {
+                      "content": "2 days ago"
+                     }
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "contentId": "lockSoon001",
+             "contentType": "LOCKUP_CONTENT_TYPE_VIDEO"
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "shortsLockupViewModel": {
+             "entityId": "shorts-shelf-item-shortVid001",
+             "onTap": {
+              "innertubeCommand": {
+               "reelWatchEndpoint": {
+                "videoId": "shortVid001"
+               }
+              }
+             }
+            }
+           }
+          }
+         },
+         {
+          "richItemRenderer": {
+           "content": {
+            "lockupViewModel": {
+             "contentImage": {
+              "collectionThumbnailViewModel": {
+               "primaryThumbnail": {
+                "thumbnailViewModel": {
+                 "image": {
+                  "sources": [
+                   {
+                    "url": "https://i.ytimg.com/vi/RDmixPlaylistthumb/hqdefault.jpg",
+                    "width": 480,
+                    "height": 270
+                   }
+                  ]
+                 },
+                 "overlays": [
+                  {
+                   "thumbnailOverlayBadgeViewModel": {
+                    "thumbnailBadges": [
+                     {
+                      "thumbnailBadgeViewModel": {
+                       "text": "50+ videos",
+                       "badgeStyle": "THUMBNAIL_OVERLAY_BADGE_STYLE_DEFAULT"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               }
+              }
+             },
+             "metadata": {
+              "lockupMetadataViewModel": {
+               "title": {
+                "content": "Mix"
+               }
+              }
+             },
+             "contentId": "RDmixPlaylist",
+             "contentType": "LOCKUP_CONTENT_TYPE_PLAYLIST"
+            }
+           }
+          }
+         },
+         {
+          "continuationItemRenderer": {
+           "continuationEndpoint": {
+            "continuationCommand": {
+             "token": "FEED_NEXT_TOKEN",
+             "request": "CONTINUATION_REQUEST_TYPE_BROWSE"
+            }
+           }
+          }
+         }
+        ]
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

@@ -22,17 +22,18 @@ object FeedParser {
             for ((key, value) in element) {
                 when (key) {
                     "videoRenderer" -> parseVideoRenderer(value.jsonObject)?.let { items.add(it) }
-                    "reelItemRenderer", "shortsLockupViewModel" -> {
+                    "lockupViewModel" -> LockupParser.video(value.jsonObject)?.let { items.add(it) }
+                    "reelItemRenderer" -> {
                         parseVideoRenderer(value.jsonObject, forceShort = true)?.let { items.add(it) }
+                    }
+                    "shortsLockupViewModel", "reelShelfRenderer" -> {
+                        // Shorts are never shown (FR-012)
                     }
                     "adSlotRenderer", "promotedSparklesWebRenderer", "statementBannerRenderer" -> {
                         // Drop ad renderers
                     }
                     "continuationItemRenderer" -> {
-                        continuation = value.jsonObject
-                            .get("continuationEndpoint")?.jsonObject
-                            ?.get("continuationCommand")?.jsonObject
-                            ?.get("token")?.jsonPrimitive?.contentOrNull
+                        continuation = LockupParser.continuationToken(value)
                     }
                     else -> {
                         if (value is JsonObject) walkElement(value)

@@ -1,0 +1,104 @@
+{
+ "contents": {
+  "twoColumnBrowseResultsRenderer": {
+   "tabs": [
+    {
+     "tabRenderer": {
+      "content": {
+       "sectionListRenderer": {
+        "contents": [
+         {
+          "itemSectionRenderer": {
+           "contents": [
+            {
+             "playlistVideoListRenderer": {
+              "contents": [
+               {
+                "playlistVideoRenderer": {
+                 "videoId": "wlVideo0001",
+                 "title": {
+                  "runs": [
+                   {
+                    "text": "Long lecture"
+                   }
+                  ]
+                 },
+                 "shortBylineText": {
+                  "runs": [
+                   {
+                    "text": "Lecture Channel"
+                   }
+                  ]
+                 },
+                 "lengthText": {
+                  "simpleText": "45:00"
+                 },
+                 "isPlayable": true,
+                 "thumbnail": {
+                  "thumbnails": [
+                   {
+                    "url": "https://i.ytimg.com/vi/wlVideo0001/default.jpg",
+                    "width": 168,
+                    "height": 94
+                   },
+                   {
+                    "url": "https://i.ytimg.com/vi/wlVideo0001/hqdefault.jpg",
+                    "width": 336,
+                    "height": 188
+                   },
+                   {
+                    "url": "https://i.ytimg.com/vi/wlVideo0001/maxres.jpg",
+                    "width": 1280,
+                    "height": 720
+                   }
+                  ]
+                 }
+                }
+               },
+               {
+                "playlistVideoRenderer": {
+                 "videoId": "wlDeleted01",
+                 "title": {
+                  "runs": [
+                   {
+                    "text": "[Deleted video]"
+                   }
+                  ]
+                 },
+                 "isPlayable": false
+                }
+               },
+               {
+                "continuationItemRenderer": {
+                 "continuationEndpoint": {
+                  "commandExecutorCommand": {
+                   "commands": [
+                    {
+                     "playlistVotingRefreshPopupCommand": {}
+                    },
+                    {
+                     "continuationCommand": {
+                      "token": "WL_NEXT_TOKEN",
+                      "request": "CONTINUATION_REQUEST_TYPE_BROWSE"
+                     }
+                    }
+                   ]
+                  }
+                 }
+                }
+               }
+              ]
+             }
+            }
+           ]
+          }
+         }
+        ]
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

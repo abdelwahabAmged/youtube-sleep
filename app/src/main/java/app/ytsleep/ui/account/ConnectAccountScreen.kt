@@ -30,10 +30,9 @@ fun ConnectAccountScreen(navController: NavController) {
                 settings.apply {
                     javaScriptEnabled = true
                     domStorageEnabled = true
-                    // Mobile user agent without the "; wv" token
-                    userAgentString = "Mozilla/5.0 (Linux; Android 11; Pixel 5) " +
-                            "AppleWebKit/537.36 (KHTML, like Gecko) " +
-                            "Chrome/120.0.0.0 Mobile Safari/537.36"
+                    // The phone's real WebView user agent minus the "; wv" marker, so Google
+                    // sees a current mobile Chrome instead of an embedded browser.
+                    userAgentString = WebSettings.getDefaultUserAgent(ctx).replace("; wv", "")
                     cacheMode = WebSettings.LOAD_DEFAULT
                 }
 

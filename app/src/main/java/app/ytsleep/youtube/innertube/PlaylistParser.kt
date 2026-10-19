@@ -14,11 +14,9 @@ object PlaylistParser {
             for ((key, value) in element) {
                 when (key) {
                     "playlistVideoRenderer" -> parseVideo(value.jsonObject)?.let { items.add(it) }
+                    "lockupViewModel" -> LockupParser.video(value.jsonObject)?.let { items.add(it) }
                     "continuationItemRenderer" -> {
-                        continuation = value.jsonObject
-                            .get("continuationEndpoint")?.jsonObject
-                            ?.get("continuationCommand")?.jsonObject
-                            ?.get("token")?.jsonPrimitive?.contentOrNull
+                        continuation = LockupParser.continuationToken(value)
                     }
                     else -> {
                         if (value is JsonObject) walkElement(value)
@@ -34,6 +32,8 @@ object PlaylistParser {
 
     private fun parseVideo(obj: JsonObject): MediaItem? {
         val videoId = obj["videoId"]?.jsonPrimitive?.contentOrNull ?: return null
+        // Deleted or private videos stay in playlists but can't be played.
+        if (obj["isPlayable"]?.jsonPrimitive?.contentOrNull == "false") return null
 
         val title = obj["title"]?.let {
             when (it) {
@@ -52,9 +52,11 @@ object PlaylistParser {
         val lengthText = obj["lengthText"]?.jsonObject?.get("simpleText")?.jsonPrimitive?.contentOrNull
         val durationSeconds = lengthText?.let { parseLength(it) }
 
+        // Largest thumbnail that is still small enough for a list row.
         val thumbnail = obj["thumbnail"]?.jsonObject
             ?.get("thumbnails")?.jsonArray
-            ?.firstOrNull()?.jsonObject
+            ?.map { it.jsonObject }
+            ?.let { thumbs -> thumbs.lastOrNull { (it["width"]?.jsonPrimitive?.contentOrNull?.toIntOrNull() ?: 0) <= 480 } ?: thumbs.firstOrNull() }
             ?.get("url")?.jsonPrimitive?.contentOrNull ?: ""
 
         return MediaItem(

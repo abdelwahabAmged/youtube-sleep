@@ -5,6 +5,8 @@ import kotlinx.serialization.json.*
 
 object LibraryParser {
 
+    private const val SAVED_SHORTS_ID = "YS"
+
     fun parse(root: JsonObject): List<PlaylistSummary> {
         val result = mutableListOf<PlaylistSummary>()
 
@@ -12,9 +14,10 @@ object LibraryParser {
             if (element !is JsonObject) return
             for ((key, value) in element) {
                 when (key) {
-                    "gridPlaylistRenderer", "playlistRenderer", "lockupViewModel" -> {
+                    "gridPlaylistRenderer", "playlistRenderer" -> {
                         parsePlaylist(value.jsonObject)?.let { result.add(it) }
                     }
+                    "lockupViewModel" -> LockupParser.playlist(value.jsonObject)?.let { result.add(it) }
                     else -> {
                         if (value is JsonObject) walkElement(value)
                         else if (value is JsonArray) value.forEach { walkElement(it) }
@@ -24,6 +27,8 @@ object LibraryParser {
         }
 
         walkElement(root)
+        // "Saved Shorts" holds only Shorts, which the app never shows (FR-012).
+        result.removeAll { it.playlistId == SAVED_SHORTS_ID }
 
         // Always prepend WL (Watch later) and LL (Liked videos)
         val specialIds = result.map { it.playlistId }.toSet()
